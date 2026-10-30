@@ -1,0 +1,17 @@
+{
+  "versions": [
+    {
+      "platform": "x",
+      "text": "One of our bakeries was binning about 18% of what they baked. Nobody counted the bin.\n\nWe put a clipboard by the back door. Six weeks later they were at 9%.\n\nThat's not accounting, that's counting."
+    },
+    {
+      "platform": "instagram",
+      "caption": "Nobody at one of our bakeries counted the bin.\n\nThey were binning about 18% of what they baked, and didn't know.\n\nWe set them up with a sheet. Literally a clipboard by the back door.\n\nSix weeks later they were at 9%.\n\nThe thing with bakeries is the margins live in the waste.\n\nThat's not accounting, that's counting."
+    },
+    {
+      "platform": "instagram_reels",
+      "caption": "Nobody counted the bin. Six weeks with a clipboard: 18% waste down to 9%.",
+      "script": "One of our bakeries was binning about 18% of what they baked.\nThey didn't know.\nNobody counted the bin.\nSo we put a sheet by the back door.\nLiterally a clipboard.\nSix weeks later, they were at 9%.\nThat's not accounting, that's counting."
+    }
+  ]
+}
