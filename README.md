@@ -4,7 +4,7 @@ Everything needed to start and run a LinkedIn ghostwriting business that uses AI
 
 | Folder | What's in it |
 |--------|--------------|
-| `niche/` | Chosen niche (UK heritage restoration contractors): research, scoring, offer, validation plan, and a heritage-building primer for the writer |
+| `niche/` | Chosen niche (UK heritage restoration contractors): research, scoring, offer, validation plan, heritage primer, one-page leaflet (A/B, source in `niche/leaflet/`) and its test plan |
 | `skills/social-optimizer/` | Claude skill + length checker that adapts one approved post for X, Threads, Instagram, Facebook, Google Business Profile and short-video scripts |
 | `skills/voice-profile/` | Claude skill that builds a client's voice profile from their own writing and interviews, then drafts and checks posts against it. Install by copying it to `~/.claude/skills/voice-profile/`. |
 | `sales/outreach-sequences.md` | Cold email, LinkedIn (manual) and warm-network sequences, reply templates, sending setup |
