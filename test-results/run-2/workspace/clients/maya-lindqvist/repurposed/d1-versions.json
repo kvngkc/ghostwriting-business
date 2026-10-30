@@ -1,0 +1,22 @@
+{
+  "source": "D1 (drafts/2026-10-30-drafts.md), status: draft, not approved",
+  "versions": [
+    {
+      "platform": "x",
+      "text": "One of our bakery clients was binning about 18% of what they baked. They didn't know, because nobody counted the bin.\n\nWe set them up with a clipboard by the back door. Six weeks later they were at 9%.\n\nThat's not accounting, that's counting."
+    },
+    {
+      "platform": "instagram",
+      "photo_note": "[ASK CLIENT: a photo of the actual clipboard by the back door, if the bakery agrees. No signage, faces or anything that identifies the bakery. If there's no photo, use the 5-slide text carousel below.]",
+      "carousel_fallback": ["A bakery was binning 18% of what they baked.", "They didn't know. Nobody counted the bin.", "With bakeries, the margins live in the waste.", "So we set them up with a clipboard by the back door.", "Six weeks later they were at 9%. That's not accounting, that's counting."],
+      "alt_text": "[ASK WRITER: write once the photo is chosen; describe only what is in it]",
+      "caption": "Nobody counted the bin. So nobody knew 18% of the baking was going in it.\n\nIt was one of our new bakery clients. We set them up with a sheet. Literally a clipboard by the back door.\n\nWith bakeries, the margins live in the waste.\n\nSix weeks later they were at 9%.\n\nThat's not accounting, that's counting. But it shows up in the accounts."
+    },
+    {
+      "platform": "instagram_reels",
+      "script": "[0-3s] One of our bakery clients was binning about 18% of what they baked.\n[3-15s] They didn't know. Nobody counted the bin. With bakeries, the margins live in the waste. So we set them up with a sheet. Literally a clipboard by the back door.\n[15-20s] Six weeks later, they were at 9%.\n[20-25s] That's not accounting, that's counting.",
+      "shot_list": "1. Maya to camera, close, for the hook. 2. [ASK CLIENT: if the bakery agrees] the clipboard by the back door, no signage or faces. Otherwise stay on Maya. 3. Maya to camera for the 9% and the closing line. Don't film anywhere that shows or hints at the new office.",
+      "caption": "That's not accounting, that's counting."
+    }
+  ]
+}
