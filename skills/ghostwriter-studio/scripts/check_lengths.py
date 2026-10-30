@@ -53,7 +53,9 @@ def check(versions):
             problems.append(f"{name}: {tags} hashtags; max {spec['max_hashtags']}")
         if not spec.get("verified", True):
             report.append(f"{name}: limits not officially verified, check in the composer")
-        notes = OPEN_NOTE.findall(" ".join(texts))
+        # Scan every string in the version (alt text, shot lists, photo notes...), not just limited fields.
+        extras = [x for k, val in v.items() if k != "platform" for x in (val if isinstance(val, list) else [val]) if isinstance(x, str)]
+        notes = OPEN_NOTE.findall(" ".join(extras))
         if notes:
             pending.append(f"{name}: {len(notes)} unresolved [ASK/CHECK] note(s) in the text")
     return problems, pending, report
