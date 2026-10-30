@@ -14,8 +14,12 @@ from pathlib import Path
 
 EMOJI = re.compile("[\U0001F300-\U0001FAFF\U00002600-\U000027BF]")
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
-BRITISH = re.compile(r"\b\w+(our|ise|ised|ising|yse)\b", re.I)
-AMERICAN = re.compile(r"\b\w+(or|ize|ized|izing|yze)\b", re.I)
+# Word stems that differ between British and American spelling. A generic
+# "-or"/"-our" pattern miscounts words like "for" and "door".
+_STEMS = ["colo", "favo", "behavio", "labo", "hono", "neighbo", "flavo", "humo", "rumo", "harbo", "endeavo"]
+_IZE = ["organi", "reali", "recogni", "priori", "speciali", "summari", "maximi", "minimi", "optimi", "apologi", "emphasi", "standardi", "categori", "customi", "utili"]
+BRITISH = re.compile(r"\b(?:(?:%s)urs?|(?:%s)s(?:e|es|ed|ing|ation)|analys(?:e|ed|ing)|centre|metre|theatre|cheque|programme|travell(?:ed|ing|er))\b" % ("|".join(_STEMS), "|".join(_IZE)), re.I)
+AMERICAN = re.compile(r"\b(?:(?:%s)rs?|(?:%s)z(?:e|es|ed|ing|ation)|analyz(?:e|ed|ing)|center|meter|theater|check(?=ing account)|program(?!m)|travel(?:ed|ing|er))\b" % ("|".join(_STEMS), "|".join(_IZE)), re.I)
 
 
 def sentences(text):

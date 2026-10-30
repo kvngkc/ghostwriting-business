@@ -6,6 +6,7 @@ A free Claude skill for solo ghostwriters. It learns your process, then runs it 
 |------|--------------|
 | `skills/ghostwriter-studio/` | The skill. Start with its `README.md` (what it does, how to install). |
 | `dist/ghostwriter-studio.zip` | The file people upload to claude.ai (Settings → Capabilities → Skills). Rebuild after changing the skill (command below). |
+| `launch/test-kit/` | Fictional client (posts + call transcript) and an 8-test checklist for trying the skill on claude.ai |
 | `launch/launch-plan.md` | How to get the first solo ghostwriters using it and giving feedback |
 | `launch/launch-post.md` | LinkedIn launch post, plus `launch/slides/` (3 images) |
 | `tracker/ghostwriting-hq.html` | Source of the Studio HQ tracker: launch tasks, outreach, users |
