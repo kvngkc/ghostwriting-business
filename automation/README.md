@@ -7,7 +7,11 @@ Voice profile skill (Claude Code) ────┤  builds/updates voice-profile.
                                       ▼
 Weekly: draft_posts.py (cron or n8n) ─► clients/<slug>/drafts/<date>.md
                                       ▼
-You edit (human pass) ─► client approves ─► schedule in Postiz or Publora ─► LinkedIn
+You edit (human pass) ─► client approves master post
+                                      ▼
+optimize_posts.py ─► X, Threads, Instagram, Facebook, Google Business Profile, TikTok/Reels/Shorts scripts
+                                      ▼
+client approves versions ─► schedule in Postiz or Publora
 ```
 
 The automation does the drafting. Editing and client approval stay manual on purpose, because that's what clients pay for and it keeps false claims out of their posts.
@@ -43,6 +47,16 @@ Run it every Monday at 07:10 with cron (`crontab -e`):
 ```
 10 7 * * 1 cd /path/to/ghostwriting-business/automation && for c in clients/*/; do .venv/bin/python scripts/draft_posts.py "$(basename "$c")"; done >> drafts.log 2>&1
 ```
+
+## 2b. Other platforms (social optimiser)
+
+Once the client approves a master post, save it as a file and run:
+
+```bash
+.venv/bin/python scripts/optimize_posts.py <client-slug> clients/<client-slug>/approved/<post>.md --platforms x,instagram,facebook,google_business_profile,tiktok
+```
+
+This writes `clients/<slug>/social/<post>.json` and a readable `.md` version, then checks every version against the limits in `skills/social-optimizer/references/platforms.json`. If a check fails, Claude gets one chance to fix the failing lines. Send the `.md` to the client for one approval covering all versions. Some limits are marked unverified, so confirm them in each platform's composer.
 
 ## 3. Scheduling with Postiz (self-hosted)
 

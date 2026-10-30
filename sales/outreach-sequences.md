@@ -86,6 +86,42 @@ For people who already know you. Send to 20–30 people in week one.
 
 ---
 
+## Sequence D: Heritage restoration contractors (the chosen niche)
+
+Build the list from the NFRC Heritage Roofing Register, the Lead Contractors Association directory, the Building Conservation Directory and IHBC registers (see `niche/niche-research.md`). These owners read email on a phone between site visits, so keep every email under 90 words. Phone follow-ups work well in this trade.
+
+**Email 1 (day 0)**
+> Subject: the [building / village] job
+>
+> Hi [first name],
+>
+> I read about your work on [real project from their site], especially [specific detail, e.g. "taking the cement pointing out and going back to hot-mixed lime"]. That's exactly the kind of story conservation architects stop scrolling for, and it's buried on a project page.
+>
+> I write posts for heritage craftspeople from voice notes and site photos, so there's no laptop needed. Want me to turn that job into 3 sample posts for you, free?
+>
+> [Your name]
+>
+> [Postal address] · Reply "no thanks" and I won't email again.
+
+**Email 2 (day 4)**
+> Subject: voice notes, not typing
+>
+> Hi [first name],
+>
+> The firms I work with don't write anything. They send a couple of voice notes a week from site, plus photos, and get posts back for LinkedIn, Instagram and their Google listing to approve by WhatsApp.
+>
+> Happy to show you with your [project] as the example. Interested?
+
+**Email 3 (day 10)**: proof. Use a real sample or result. Before your first client, link one sample post you wrote from a public project page.
+
+**Phone call (day 12, optional):** "I emailed about turning your [project] into posts. Did the samples idea interest you?" Keep it to 2 minutes.
+
+**Email 4 (day 21)**: breakup. Same as Sequence A, mentioning their project.
+
+**Wording rules for this niche:** use their trade terms correctly (see `niche/heritage-primer.md`). Say "jobs" and "work", not "content" and "engagement". Never call a listed building "old stock".
+
+---
+
 ## Reply handling
 
 | Reply | What to send |

@@ -19,7 +19,9 @@ Won deals move into the **Clients** tab.
 
 ## Stage 1. Prospect: who to target
 
-Ideal client (adjust once you have data):
+**Current niche: UK heritage restoration contractors.** See `niche/niche-research.md` for the ideal client profile, where to find them (NFRC Heritage Register, Lead Contractors Association, Building Conservation Directory, IHBC registers), and the validation plan. Use outreach Sequence D, and read `niche/heritage-primer.md` before any call.
+
+General profile, if you test another niche:
 - Founder, managing partner, consultant or coach selling a high-value B2B service. One new client is worth much more to them than your fee.
 - Has real expertise and material to draw on: talks, podcasts, newsletters, client stories.
 - Has a LinkedIn presence but posts rarely, or posts generic content.

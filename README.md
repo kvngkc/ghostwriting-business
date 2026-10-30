@@ -4,10 +4,12 @@ Everything needed to start and run a LinkedIn ghostwriting business that uses AI
 
 | Folder | What's in it |
 |--------|--------------|
+| `niche/` | Chosen niche (UK heritage restoration contractors): research, scoring, offer, validation plan, and a heritage-building primer for the writer |
+| `skills/social-optimizer/` | Claude skill + length checker that adapts one approved post for X, Threads, Instagram, Facebook, Google Business Profile and short-video scripts |
 | `skills/voice-profile/` | Claude skill that builds a client's voice profile from their own writing and interviews, then drafts and checks posts against it. Install by copying it to `~/.claude/skills/voice-profile/`. |
 | `sales/outreach-sequences.md` | Cold email, LinkedIn (manual) and warm-network sequences, reply templates, sending setup |
 | `sales/sales-pipeline-playbook.md` | Full sales cycle: targeting, outreach, discovery call script, objections, proposal, close, retention, metrics |
-| `automation/` | Weekly drafting script (Claude API), Postiz scheduler setup, n8n, cron |
+| `automation/` | Weekly drafting script and multi-platform optimiser (Claude API), Postiz scheduler setup, n8n, cron |
 | `business/business-setup.md` | Registration, tax, payments, contracts, data protection, outreach rules, tools, risks |
 | `business/client-agreement-template.md` | Services agreement template (have a lawyer review it) |
 | `business/client-onboarding-checklist.md` | Day-by-day onboarding for each new client |
@@ -17,11 +19,12 @@ Tracker: https://claude.ai/artifact/Hroey4NmEcGgZH1B4MK4rz (private to you)
 
 ## Order of work
 
-1. Work through the Launch tab in the tracker, top to bottom.
-2. Run the process on yourself first, so you have a portfolio.
-3. Start outreach and log every prospect in the Pipeline tab.
-4. When a deal is won, it appears in Clients. Onboard it with the checklist.
-5. Every week: drafts → your edit → client approval → schedule. Every month: interview, voice profile update, report, invoice.
+1. Read `niche/niche-research.md` and run its validation plan (talk to 10 heritage firms) before investing further.
+2. Work through the Launch tab in the tracker, top to bottom.
+3. Run the process on yourself first, so you have a portfolio.
+4. Start outreach and log every prospect in the Pipeline tab.
+5. When a deal is won, it appears in Clients. Onboard it with the checklist.
+6. Every week: drafts → your edit → client approval → social optimiser → schedule. Every month: interview, voice profile update, report, invoice.
 
 ## Ground rules
 
