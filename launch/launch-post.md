@@ -1,6 +1,6 @@
 # LinkedIn Launch Post: Ghostwriter Studio
 
-Images: 3 slides (1080 × 1350) on the "LinkedIn post" page of https://claude.ai/artifact/EqTLEKaLPAoAifjjqSUv2n. Export each as PNG and upload them as one multi-image post, in order 1, 2, 3. Sources are in `niche/leaflet/Post*.dc.html`. The skill to send people is `dist/ghostwriter-studio.zip`.
+Images: 3 slides (1080 × 1350) on the "LinkedIn post" page of https://claude.ai/artifact/EqTLEKaLPAoAifjjqSUv2n. Export each as PNG and upload them as one multi-image post, in order 1, 2, 3. Sources are in `launch/slides/Post*.dc.html`. The skill to send people is `dist/ghostwriter-studio.zip`.
 
 ---
 

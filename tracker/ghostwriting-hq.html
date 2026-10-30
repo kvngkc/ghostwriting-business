@@ -1,4 +1,4 @@
-<title>Ghostwriting HQ</title>
+<title>Studio HQ</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
@@ -63,6 +63,7 @@ textarea { min-height: 70px; resize: vertical }
 .card { border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; display: grid; gap: 4px; background: var(--bg); min-width: 0 }
 .card .n { font-weight: 600; overflow-wrap: anywhere }
 .card .c { font-size: 13px; color: var(--muted); overflow-wrap: anywhere }
+.c a, td a { color: var(--accent) }
 .card .due { font: 12px var(--mono) }
 .due.late { color: var(--bad) }
 .card .row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px }
@@ -82,38 +83,39 @@ tr:last-child td { border-bottom: 0 }
 <div class="wrap">
   <header>
     <div>
-      <h1>Ghostwriting HQ</h1>
-      <p class="sub">Launch plan, sales pipeline and clients for the ghostwriting business.</p>
+      <h1>Studio HQ</h1>
+      <p class="sub">Launch plan, outreach and users for Ghostwriter Studio, the free Claude skill for solo ghostwriters.</p>
     </div>
     <span class="status" id="status">Connecting to saved data…</span>
   </header>
 
   <section class="strip" aria-label="Summary">
     <div class="stat"><b id="s-launch">–</b><span>Launch tasks done</span></div>
-    <div class="stat"><b id="s-open">–</b><span>Open deals</span></div>
+    <div class="stat"><b id="s-contacted">–</b><span>Ghostwriters contacted</span></div>
     <div class="stat"><b id="s-followups">–</b><span>Follow-ups due</span></div>
-    <div class="stat"><b id="s-clients">–</b><span>Active clients</span></div>
-    <div class="stat"><b id="s-mrr">–</b><span>Monthly revenue</span></div>
+    <div class="stat"><b id="s-active">–</b><span>Active users</span></div>
+    <div class="stat"><b id="s-feedback">–</b><span>Feedback collected</span></div>
   </section>
 
   <nav role="tablist">
     <button role="tab" id="tab-launch" aria-selected="true" data-view="launch">Launch</button>
-    <button role="tab" id="tab-pipeline" aria-selected="false" data-view="pipeline">Pipeline</button>
-    <button role="tab" id="tab-clients" aria-selected="false" data-view="clients">Clients</button>
+    <button role="tab" id="tab-outreach" aria-selected="false" data-view="outreach">Outreach</button>
+    <button role="tab" id="tab-users" aria-selected="false" data-view="users">Users</button>
   </nav>
 
   <div id="notice" class="notice" hidden></div>
   <section id="editor" class="panel" hidden aria-live="polite"></section>
 
   <section id="view-launch" data-panel="launch"></section>
-  <section id="view-pipeline" data-panel="pipeline" hidden></section>
-  <section id="view-clients" data-panel="clients" hidden></section>
+  <section id="view-outreach" data-panel="outreach" hidden></section>
+  <section id="view-users" data-panel="users" hidden></section>
 </div>
 
 <script>
 (() => {
-  const STAGES = ["Prospect", "Contacted", "Replied", "Sample sent", "Call booked", "Proposal sent", "Won", "Lost"];
-  const PHASES = ["1. Foundations", "2. Offer & proof", "3. Systems", "4. Outreach", "5. First clients"];
+  const STAGES = ["Found", "Messaged", "Said yes", "Sent skill", "Installed", "Gave feedback", "Not now"];
+  const LAST_ACTIVE = STAGES.length - 2; // "Gave feedback"; "Not now" is the exit
+  const PHASES = ["1. Test it yourself", "2. First testers", "3. Public launch", "4. Follow up"];
   const FIELDS = {
     launch: [
       { k: "task", label: "Task", wide: true, required: true },
@@ -121,37 +123,35 @@ tr:last-child td { border-bottom: 0 }
       { k: "due", label: "Due", type: "date" },
       { k: "notes", label: "Notes", type: "textarea", wide: true },
     ],
-    deals: [
+    outreach: [
       { k: "name", label: "Name", required: true },
-      { k: "company", label: "Company / role" },
+      { k: "link", label: "LinkedIn URL or handle" },
       { k: "stage", label: "Stage", options: STAGES },
-      { k: "source", label: "Source", options: ["Cold email", "LinkedIn", "Warm network", "Referral", "Inbound", "Other"] },
-      { k: "contact", label: "Email or LinkedIn URL" },
-      { k: "value", label: "Monthly value", type: "number" },
-      { k: "currency", label: "Currency", options: ["USD", "GBP", "EUR", "NGN"] },
+      { k: "source", label: "Found via", options: ["LinkedIn search", "Comment on launch post", "Referral", "Community", "Other"] },
+      { k: "clients", label: "Clients they write for", type: "number" },
       { k: "nextAction", label: "Next action" },
       { k: "nextDate", label: "Next action date", type: "date" },
-      { k: "lostReason", label: "Lost reason", options: ["", "No reply", "No budget", "Bad timing", "Chose someone else", "Not a fit", "Do not contact"] },
-      { k: "hook", label: "Hook (the true, specific reason you're contacting them)", type: "textarea", wide: true },
+      { k: "notNowReason", label: "Not now reason", options: ["", "No reply", "No time", "Doesn't use Claude", "Not a fit", "Do not contact"] },
+      { k: "noticed", label: "What you noticed about them (for the first message)", type: "textarea", wide: true },
       { k: "notes", label: "Notes", type: "textarea", wide: true },
     ],
-    clients: [
-      { k: "name", label: "Client", required: true },
-      { k: "company", label: "Company" },
-      { k: "status", label: "Status", options: ["Onboarding", "Active", "Paused", "Churned"] },
-      { k: "plan", label: "Plan" },
-      { k: "fee", label: "Monthly fee", type: "number" },
-      { k: "currency", label: "Currency", options: ["USD", "GBP", "EUR", "NGN"] },
-      { k: "start", label: "Start date", type: "date" },
-      { k: "nextInvoice", label: "Next invoice", type: "date" },
-      { k: "nextInterview", label: "Next interview", type: "date" },
-      { k: "voice", label: "Voice profile", options: ["Not started", "Provisional", "Approved"] },
-      { k: "postsPerMonth", label: "Posts / month", type: "number" },
+    users: [
+      { k: "name", label: "Name", required: true },
+      { k: "link", label: "LinkedIn URL or handle" },
+      { k: "status", label: "Status", options: ["Installing", "Active", "Quiet", "Dropped"] },
+      { k: "installed", label: "Installed on", type: "date" },
+      { k: "clients", label: "Clients they write for", type: "number" },
+      { k: "nextCheckIn", label: "Next check-in", type: "date" },
+      { k: "modes", label: "Modes they use most" },
+      { k: "timeSaved", label: "Time saved (their words)" },
+      { k: "quoteOk", label: "OK to quote?", options: ["Not asked", "Yes", "No"] },
+      { k: "wouldPay", label: "Would pay later?", options: ["Not asked", "Yes", "Maybe", "No"] },
+      { k: "feedback", label: "Feedback (their words)", type: "textarea", wide: true },
       { k: "notes", label: "Notes", type: "textarea", wide: true },
     ],
   };
-  const COLL = { launch: "launch", pipeline: "deals", clients: "clients" };
-  const state = { launch: [], deals: [], clients: [], ready: false };
+  const COLL = { launch: "launch", outreach: "outreach", users: "users" };
+  const state = { launch: [], outreach: [], users: [], ready: false };
   let db = null, view = "launch";
 
   const $ = (s) => document.querySelector(s);
@@ -167,12 +167,9 @@ tr:last-child td { border-bottom: 0 }
   };
   const today = () => new Date().toISOString().slice(0, 10);
   const fmtDate = (d) => d ? new Date(d + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short" }) : "";
-  const money = (n, c) => {
-    try { return new Intl.NumberFormat(undefined, { style: "currency", currency: c || "USD", maximumFractionDigits: 0 }).format(n || 0); }
-    catch { return `${c || ""} ${n || 0}`; }
-  };
   const setStatus = (t) => { $("#status").textContent = t; };
   const showNotice = (t) => { const n = $("#notice"); n.textContent = t; n.hidden = !t; };
+  const linkOrText = (v) => /^https?:\/\//.test(v || "") ? el("a", { href: v, target: "_blank", rel: "noopener" }, "Profile") : (v || null);
 
   // ---------- tabs ----------
   function selectView(v) {
@@ -187,8 +184,7 @@ tr:last-child td { border-bottom: 0 }
 
   // ---------- editor ----------
   function closeEditor() { const e = $("#editor"); e.hidden = true; e.replaceChildren(); }
-  function openEditor(kind, doc) {
-    const coll = COLL[kind] || kind;
+  function openEditor(coll, doc) {
     const fields = FIELDS[coll];
     const data = doc ? { ...doc.data } : defaults(coll);
     const form = el("form", { class: "form" });
@@ -220,7 +216,7 @@ tr:last-child td { border-bottom: 0 }
       save.disabled = false;
       if (ok) closeEditor();
     });
-    const titles = { launch: "launch task", deals: "deal", clients: "client" };
+    const titles = { launch: "launch task", outreach: "ghostwriter to contact", users: "user" };
     const e = $("#editor");
     e.replaceChildren(el("div", { class: "bar" }, el("h2", {}, (doc ? "Edit " : "New ") + titles[coll])), form);
     e.hidden = false;
@@ -228,8 +224,8 @@ tr:last-child td { border-bottom: 0 }
   }
   function defaults(coll) {
     if (coll === "launch") return { phase: PHASES[0], done: false, order: Date.now() };
-    if (coll === "deals") return { stage: "Prospect", currency: "USD", source: "Cold email", created: today() };
-    return { status: "Onboarding", currency: "USD", voice: "Not started", start: today() };
+    if (coll === "outreach") return { stage: "Found", source: "LinkedIn search", created: today() };
+    return { status: "Installing", installed: today(), quoteOk: "Not asked", wouldPay: "Not asked" };
   }
 
   // ---------- data ----------
@@ -250,20 +246,18 @@ tr:last-child td { border-bottom: 0 }
   }
 
   // ---------- render ----------
-  function render() { renderSummary(); renderLaunch(); renderPipeline(); renderClients(); }
+  function render() { renderSummary(); renderLaunch(); renderOutreach(); renderUsers(); }
 
   function renderSummary() {
     if (!state.ready) return;
     const done = state.launch.filter(t => t.data.done).length;
     $("#s-launch").textContent = state.launch.length ? `${done}/${state.launch.length}` : "0";
-    const open = state.deals.filter(d => !["Won", "Lost"].includes(d.data.stage));
-    $("#s-open").textContent = open.length;
-    $("#s-followups").textContent = open.filter(d => d.data.nextDate && d.data.nextDate <= today()).length;
-    const active = state.clients.filter(c => ["Active", "Onboarding"].includes(c.data.status));
-    $("#s-clients").textContent = active.length;
-    const byCur = {};
-    for (const c of active) if (c.data.fee) byCur[c.data.currency || "USD"] = (byCur[c.data.currency || "USD"] || 0) + c.data.fee;
-    $("#s-mrr").textContent = Object.keys(byCur).length ? Object.entries(byCur).map(([c, n]) => money(n, c)).join(" + ") : "0";
+    $("#s-contacted").textContent = state.outreach.filter(d => d.data.stage && d.data.stage !== "Found").length;
+    const open = state.outreach.filter(d => d.data.stage !== "Not now");
+    $("#s-followups").textContent = open.filter(d => d.data.nextDate && d.data.nextDate <= today()).length
+      + state.users.filter(u => u.data.nextCheckIn && u.data.nextCheckIn <= today() && u.data.status !== "Dropped").length;
+    $("#s-active").textContent = state.users.filter(u => u.data.status === "Active").length;
+    $("#s-feedback").textContent = state.users.filter(u => (u.data.feedback || "").trim()).length;
   }
 
   function renderLaunch() {
@@ -295,69 +289,71 @@ tr:last-child td { border-bottom: 0 }
     }));
   }
 
-  function renderPipeline() {
-    const root = $("#view-pipeline");
+  function renderOutreach() {
+    const root = $("#view-outreach");
     const head = el("div", { class: "bar" },
-      el("h2", {}, "Sales pipeline"),
-      el("button", { class: "btn primary", onclick: () => openEditor("pipeline") }, "Add prospect"));
-    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading deals…"));
-    if (!state.deals.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No prospects yet. Add someone you've researched, with the specific hook you'll open with."));
+      el("h2", {}, "Outreach to ghostwriters"),
+      el("button", { class: "btn primary", onclick: () => openEditor("outreach") }, "Add ghostwriter"));
+    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading outreach…"));
+    if (!state.outreach.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No one yet. Add a solo ghostwriter you've found, with what you noticed about them for your first message."));
     const board = el("div", { class: "board" }, STAGES.map((stage, i) => {
-      const deals = state.deals.filter(d => (d.data.stage || "Prospect") === stage)
+      const people = state.outreach.filter(d => (d.data.stage || "Found") === stage)
         .sort((a, b) => (a.data.nextDate || "9999").localeCompare(b.data.nextDate || "9999"));
       return el("div", { class: "col" },
-        el("h3", {}, stage, el("span", {}, deals.length)),
-        deals.map(d => {
-          const late = d.data.nextDate && d.data.nextDate <= today() && !["Won", "Lost"].includes(stage);
+        el("h3", {}, stage, el("span", {}, people.length)),
+        people.map(d => {
+          const late = d.data.nextDate && d.data.nextDate <= today() && stage !== "Not now";
           return el("div", { class: "card" },
             el("div", { class: "n" }, d.data.name),
-            d.data.company ? el("div", { class: "c" }, d.data.company) : null,
+            d.data.noticed ? el("div", { class: "c" }, d.data.noticed.length > 90 ? d.data.noticed.slice(0, 90) + "…" : d.data.noticed) : null,
             d.data.nextAction || d.data.nextDate ? el("div", { class: "due" + (late ? " late" : "") }, [d.data.nextAction, d.data.nextDate ? fmtDate(d.data.nextDate) : ""].filter(Boolean).join(" · ")) : null,
             el("div", { class: "row" },
               d.data.source ? el("span", { class: "pill" }, d.data.source) : null,
-              d.data.value ? el("span", { class: "pill" }, money(d.data.value, d.data.currency) + "/mo") : null,
-              stage === "Lost" && d.data.lostReason ? el("span", { class: "pill bad" }, d.data.lostReason) : null),
+              d.data.clients ? el("span", { class: "pill" }, `${d.data.clients} clients`) : null,
+              stage === "Not now" && d.data.notNowReason ? el("span", { class: "pill bad" }, d.data.notNowReason) : null),
             el("div", { class: "row" },
-              i > 0 && stage !== "Lost" ? el("button", { class: "btn small", "aria-label": `Move ${d.data.name} back`, onclick: () => patch("deals", d.id, { stage: STAGES[i - 1] }) }, "←") : null,
-              i < 6 ? el("button", { class: "btn small", "aria-label": `Move ${d.data.name} to ${STAGES[i + 1]}`, onclick: () => advance(d, i + 1) }, STAGES[i + 1] + " →") : null,
-              i < 6 ? el("button", { class: "btn small", onclick: () => openEditor("pipeline", { ...d, data: { ...d.data, stage: "Lost" } }) }, "Lost") : null,
-              el("button", { class: "btn small", onclick: () => openEditor("pipeline", d) }, "Edit")));
+              i > 0 && stage !== "Not now" ? el("button", { class: "btn small", "aria-label": `Move ${d.data.name} back`, onclick: () => patch("outreach", d.id, { stage: STAGES[i - 1] }) }, "←") : null,
+              i < LAST_ACTIVE ? el("button", { class: "btn small", "aria-label": `Move ${d.data.name} to ${STAGES[i + 1]}`, onclick: () => advance(d, i + 1) }, STAGES[i + 1] + " →") : null,
+              i <= LAST_ACTIVE ? el("button", { class: "btn small", onclick: () => openEditor("outreach", { ...d, data: { ...d.data, stage: "Not now" } }) }, "Not now") : null,
+              el("button", { class: "btn small", onclick: () => openEditor("outreach", d) }, "Edit")));
         }));
     }));
     root.replaceChildren(head, board);
   }
   async function advance(d, to) {
-    await patch("deals", d.id, { stage: STAGES[to] });
-    if (STAGES[to] === "Won" && !state.clients.some(c => c.data.dealId === d.id)) {
-      await write("clients", null, { ...defaults("clients"), name: d.data.name, company: d.data.company || "", fee: d.data.value ?? null, currency: d.data.currency || "USD", dealId: d.id, notes: "Created from pipeline. Run the onboarding checklist." });
-      showNotice(`${d.data.name} added to Clients.`);
+    await patch("outreach", d.id, { stage: STAGES[to] });
+    if (STAGES[to] === "Sent skill" && !state.users.some(u => u.data.outreachId === d.id)) {
+      const checkIn = new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10);
+      await write("users", null, { ...defaults("users"), name: d.data.name, link: d.data.link || "", clients: d.data.clients ?? null, nextCheckIn: checkIn, outreachId: d.id, notes: "Added when the skill was sent. Check in after 7 days." });
+      showNotice(`${d.data.name} added to Users, with a check-in in 7 days.`);
     }
   }
 
-  function renderClients() {
-    const root = $("#view-clients");
+  function renderUsers() {
+    const root = $("#view-users");
     const head = el("div", { class: "bar" },
-      el("h2", {}, "Clients"),
-      el("button", { class: "btn primary", onclick: () => openEditor("clients") }, "Add client"));
-    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading clients…"));
-    if (!state.clients.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No clients yet. Deals you move to Won appear here automatically."));
-    const order = { Onboarding: 0, Active: 1, Paused: 2, Churned: 3 };
-    const rows = [...state.clients].sort((a, b) => (order[a.data.status] ?? 9) - (order[b.data.status] ?? 9) || (a.data.name || "").localeCompare(b.data.name || ""));
+      el("h2", {}, "Users"),
+      el("button", { class: "btn primary", onclick: () => openEditor("users") }, "Add user"));
+    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading users…"));
+    if (!state.users.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No users yet. People you move to \"Sent skill\" appear here, with a check-in date."));
+    const order = { Installing: 0, Active: 1, Quiet: 2, Dropped: 3 };
+    const rows = [...state.users].sort((a, b) => (order[a.data.status] ?? 9) - (order[b.data.status] ?? 9) || (a.data.name || "").localeCompare(b.data.name || ""));
     const due = (d) => d ? el("span", { class: d <= today() ? "due late" : "due" }, fmtDate(d)) : "—";
-    const statusPill = (s) => el("span", { class: "pill" + (s === "Paused" ? " warn" : s === "Churned" ? " bad" : "") }, s || "—");
-    const voicePill = (v) => el("span", { class: "pill" + (v === "Approved" ? "" : v === "Provisional" ? " warn" : " bad") }, v || "Not started");
+    const statusPill = (s) => el("span", { class: "pill" + (s === "Quiet" || s === "Installing" ? " warn" : s === "Dropped" ? " bad" : "") }, s || "—");
+    const yesPill = (v) => el("span", { class: "pill" + (v === "Yes" ? "" : v === "No" ? " bad" : " warn") }, v || "Not asked");
     root.replaceChildren(head, el("div", { class: "tablewrap" }, el("table", {},
-      el("thead", {}, el("tr", {}, ["Client", "Status", "Plan", "Fee / mo", "Posts", "Voice", "Next interview", "Next invoice", ""].map(h => el("th", { scope: "col" }, h)))),
-      el("tbody", {}, rows.map(c => el("tr", {},
-        el("td", {}, el("div", { class: "n" }, c.data.name), c.data.company ? el("div", { class: "c" }, c.data.company) : null),
-        el("td", {}, statusPill(c.data.status)),
-        el("td", {}, c.data.plan || "—"),
-        el("td", { class: "num" }, c.data.fee ? money(c.data.fee, c.data.currency) : "—"),
-        el("td", { class: "num" }, c.data.postsPerMonth ?? "—"),
-        el("td", {}, voicePill(c.data.voice)),
-        el("td", { class: "num" }, due(c.data.nextInterview)),
-        el("td", { class: "num" }, due(c.data.nextInvoice)),
-        el("td", {}, el("button", { class: "btn small", onclick: () => openEditor("clients", c) }, "Edit"))))))));
+      el("thead", {}, el("tr", {}, ["Ghostwriter", "Status", "Clients", "Uses most", "Time saved", "Feedback", "Quote OK", "Would pay", "Check-in", ""].map(h => el("th", { scope: "col" }, h)))),
+      el("tbody", {}, rows.map(u => el("tr", {},
+        el("td", {}, el("div", { class: "n" }, u.data.name), u.data.link ? el("div", { class: "c" }, linkOrText(u.data.link)) : null),
+        el("td", {}, statusPill(u.data.status)),
+        el("td", { class: "num" }, u.data.clients ?? "—"),
+        el("td", {}, u.data.modes || "—"),
+        el("td", {}, u.data.timeSaved || "—"),
+        el("td", {}, (u.data.feedback || "").trim() ? (u.data.feedback.length > 80 ? u.data.feedback.slice(0, 80) + "…" : u.data.feedback) : "—"),
+        el("td", {}, yesPill(u.data.quoteOk)),
+        el("td", {}, yesPill(u.data.wouldPay)),
+        el("td", { class: "num" }, due(u.data.nextCheckIn)),
+        el("td", {}, el("button", { class: "btn small", onclick: () => openEditor("users", u) }, "Edit"))))))));
   }
 
   // ---------- boot ----------
@@ -370,16 +366,17 @@ tr:last-child td { border-bottom: 0 }
     if (!api) {
       state.ready = true; render();
       setStatus("Offline");
-      showNotice("Saved data isn't available in this view. Open the page signed in to claude.ai to see and edit the trackers.");
+      showNotice("Saved data isn't available in this view. Open the page signed in to claude.ai to see and edit the tracker.");
       return;
     }
     db = api;
-    let loaded = 0;
+    const seen = new Set();
     const onErr = (err) => { setStatus("Sync problem"); showNotice(`Couldn't load data: ${err.message || err.code}.`); };
-    for (const coll of ["launch", "deals", "clients"]) {
+    for (const coll of ["launch", "outreach", "users"]) {
       db.collection(coll).onSnapshot((snap) => {
         state[coll] = snap.docs.map(d => ({ id: d.id, data: d.data() || {} }));
-        if (++loaded >= 3) state.ready = true;
+        seen.add(coll);
+        if (seen.size === 3) state.ready = true;
         if (state.ready) { render(); setStatus("Saved · live"); }
       }, onErr);
     }
