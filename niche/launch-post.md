@@ -1,36 +1,36 @@
-# LinkedIn Launch Post
+# LinkedIn Launch Post: Ghostwriter Studio
 
-Images: 3 slides (1080 × 1350) on the "LinkedIn post" page of https://claude.ai/artifact/EqTLEKaLPAoAifjjqSUv2n. Export each as PNG and upload them as one multi-image post, in order 1, 2, 3. Sources are in `niche/leaflet/Post*.dc.html`.
-
-Before posting: replace [Your name] on slide 3.
+Images: 3 slides (1080 × 1350) on the "LinkedIn post" page of https://claude.ai/artifact/EqTLEKaLPAoAifjjqSUv2n. Export each as PNG and upload them as one multi-image post, in order 1, 2, 3. Sources are in `niche/leaflet/Post*.dc.html`. The skill to send people is `dist/ghostwriter-studio.zip`.
 
 ---
 
-Some of the most skilled people in Britain have almost no presence online.
+Most of a ghostwriter's week isn't writing.
 
-Stonemasons who can match a 200-year-old ashlar face. Plasterers who still hot-mix lime. Roofers who can tell Collyweston from Welsh slate at a glance.
+It's scrubbing a 45-minute call transcript for the one story worth telling. Remembering which client says "folks" and which never would. Checking you haven't already used that anecdote. Prepping next month's call. Turning one approved post into an Instagram caption, a Facebook version and a reel script.
 
-Their best work ends up in one place: the camera roll on their phone.
+Most AI writing tools make this harder. They write in their own voice, ignore how you work, and flatten every client into the same LinkedIn post.
 
-Meanwhile, the architects, surveyors and conservation officers who specify heritage work tend to call the firms they already know. The ones they keep seeing. If you're up a scaffold all week, you're not the one they keep seeing.
+So I built a free Claude skill for ghostwriters called Ghostwriter Studio.
 
-That's the gap I'm working on.
+You stay the writer. It takes the slow parts, and does them your way.
 
-I'm starting a writing service for heritage craftspeople, built around how they already work:
+First it interviews you about your process: your formats, hook rules, banned words, best interview questions. It writes that down as your Studio Playbook, and everything after follows it.
 
-→ You send voice notes and site photos from your phone
-→ Once a month we have a 30-minute phone call
-→ I turn it into short posts in your own words, for LinkedIn, Instagram, Facebook and your Google listing
-→ You approve everything on WhatsApp before it goes out
+Then, for each client, it can:
+→ Mine a call transcript for stories and exact phrases, each linked to the line it came from
+→ Build a voice profile with a quoted example behind every rule
+→ Prep your next call: gaps in the story bank, questions in your style
+→ Draft first versions in your structures and the client's voice
+→ Check any draft line by line against the client's voice
+→ Repurpose an approved post for X, Instagram, Facebook, Google and short video
+→ Write the monthly client report from your numbers
 
-No laptop. No logins. About ten minutes of your week.
+It never invents a story, number or name. If something's missing, you get [ASK CLIENT] instead of a guess.
 
-Every story comes from you. Software helps me with first drafts, I edit every post myself, and nothing gets made up. In a trade where calling lime "cement" can lose you a client, that matters.
+When you edit its drafts, it can compare your version with its own and turn your changes into rules, so it gets closer to your taste over time.
 
-About 1 in 5 homes in England was built before 1919 (Historic England). Every one of them needs people who know what they're doing, and those people should be easy to find.
+Comment "studio" and I'll send it over. It's free.
 
-If you run a heritage firm, or know someone who does: send me one recent job and I'll write three posts you can keep, free.
+If you ghostwrite: which part of your week would you hand off first?
 
-And if you're an architect or surveyor: who's the best craftsperson you've worked with that nobody has heard of?
-
-#heritage #conservation #listedbuildings
+#ghostwriting #linkedin #copywriting

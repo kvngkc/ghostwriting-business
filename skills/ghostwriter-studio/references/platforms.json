@@ -1,0 +1,54 @@
+{
+  "_note": "Hard limits used by check_lengths.py. 'verified' is false where sources disagreed or no official figure was found in October 2026; confirm in the platform's own composer and update this file.",
+  "linkedin": {
+    "fields": {"text": {"max": 3000}},
+    "max_hashtags": 3,
+    "verified": true
+  },
+  "x": {
+    "fields": {"text": {"max": 280}},
+    "max_hashtags": 2,
+    "thread_allowed": true,
+    "verified": true,
+    "notes": "280 is the standard (non-Premium) limit. Each tweet in a thread is checked separately."
+  },
+  "threads": {
+    "fields": {"text": {"max": 500}},
+    "max_hashtags": 1,
+    "verified": true
+  },
+  "instagram": {
+    "fields": {"caption": {"max": 2200}},
+    "max_hashtags": 5,
+    "verified": false,
+    "notes": "Caption limit 2,200 is from Meta's API docs. Hashtag cap: Instagram Help Center reportedly says 5; older sources say 30. Using 5."
+  },
+  "facebook": {
+    "fields": {"text": {"max": 5000}},
+    "max_hashtags": 3,
+    "verified": false,
+    "notes": "No practical platform limit; 5,000 is a house cap so posts stay readable."
+  },
+  "google_business_profile": {
+    "fields": {"text": {"max": 1500}},
+    "max_hashtags": 0,
+    "verified": false,
+    "notes": "1,500 is from a non-official source. Check in the Business Profile post composer. No phone numbers in the text: use the button instead."
+  },
+  "tiktok": {
+    "fields": {"caption": {"max": 2200}, "script": {"max": 1200}},
+    "max_hashtags": 5,
+    "verified": false,
+    "notes": "Sources say 2,200 (Direct Post API) or 4,000 (app). Using the lower figure. Script is a house cap for about 60 seconds of speech."
+  },
+  "youtube_shorts": {
+    "fields": {"title": {"max": 100}, "description": {"max": 5000}, "script": {"max": 1200}},
+    "max_hashtags": 3,
+    "verified": true
+  },
+  "instagram_reels": {
+    "fields": {"caption": {"max": 2200}, "script": {"max": 1200}},
+    "max_hashtags": 5,
+    "verified": false
+  }
+}
