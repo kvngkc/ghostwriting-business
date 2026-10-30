@@ -29,7 +29,7 @@ These are generic AI tells. Even if a sample contains them, they were probably w
 
 ## Scoring a draft
 
-Score a draft against the profile, 1 to 5 on each line, then average.
+Score a draft against the profile, 1 to 5 on each check (row) below, then average. Then list the individual lines of the draft that break a rule.
 
 | Check | 5 means |
 |-------|---------|
