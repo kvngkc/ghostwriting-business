@@ -2,7 +2,7 @@
 client: <Full name>
 slug: <client-slug>
 status: provisional | approved
-built_from: <N> samples, <N> transcripts
+built_from: <N> samples, <N> transcripts (<onboarding / monthly>)
 last_updated: <YYYY-MM-DD>
 ---
 
@@ -20,6 +20,7 @@ last_updated: <YYYY-MM-DD>
 - Paragraph length: average <n> sentences; one-line paragraphs <n>%
 - Questions per post: <n>; exclamation marks per post: <n>
 - Emoji: <none / rare / frequent>; hashtags: <none / n per post>
+- Post length: <a>-<b> words, average <n>
 - Spelling: <British / American>
 
 ## Rules (each with evidence)
@@ -38,7 +39,8 @@ last_updated: <YYYY-MM-DD>
 - They never use: <list, from interview and samples>
 
 ## Signature moves
-- <analogy, catchphrase, framing>: "<quote>"
+- <analogy, catchphrase, framing>: "<quote>" (<source>)
+- Verbatim lines that match an AI-tell pattern, cleared for use: "<quote>" (<transcript, timestamp>; writer OK'd <date>)
 
 ## Opinions they hold
 - <opinion>: "<quote>" (<transcript, timestamp>)

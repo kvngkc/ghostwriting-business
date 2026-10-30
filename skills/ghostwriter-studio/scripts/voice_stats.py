@@ -14,18 +14,21 @@ from pathlib import Path
 
 EMOJI = re.compile("[\U0001F300-\U0001FAFF\U00002600-\U000027BF]")
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
+# "1. ", "2) ", "- ", "* ", "• " at the start of a line are list markers, not sentences.
+LIST_MARKER = re.compile(r"^(?:\d+[.)]|[-*•])\s+")
+OPENER_PUNCT = "\"'“”‘’,:;.!?()"
 # Word stems that differ between British and American spelling. A generic
 # "-or"/"-our" pattern miscounts words like "for" and "door".
 _STEMS = ["colo", "favo", "behavio", "labo", "hono", "neighbo", "flavo", "humo", "rumo", "harbo", "endeavo"]
 _IZE = ["organi", "reali", "recogni", "priori", "speciali", "summari", "maximi", "minimi", "optimi", "apologi", "emphasi", "standardi", "categori", "customi", "utili"]
-BRITISH = re.compile(r"\b(?:(?:%s)urs?|(?:%s)s(?:e|es|ed|ing|ation)|analys(?:e|ed|ing)|centre|metre|theatre|cheque|programme|travell(?:ed|ing|er))\b" % ("|".join(_STEMS), "|".join(_IZE)), re.I)
-AMERICAN = re.compile(r"\b(?:(?:%s)rs?|(?:%s)z(?:e|es|ed|ing|ation)|analyz(?:e|ed|ing)|center|meter|theater|check(?=ing account)|program(?!m)|travel(?:ed|ing|er))\b" % ("|".join(_STEMS), "|".join(_IZE)), re.I)
+BRITISH = re.compile(r"\b(?:(?:%s)urs?|(?:%s)s(?:e|es|ed|ing|ation)|analys(?:e|ed|ing)|centre|metre|theatre|cheque|programme|travell(?:ed|ing|er)|whilst|amongst|learnt|spelt|grey|cosy|aluminium)\b" % ("|".join(_STEMS), "|".join(_IZE)), re.I)
+AMERICAN = re.compile(r"\b(?:(?:%s)rs?|(?:%s)z(?:e|es|ed|ing|ation)|analyz(?:e|ed|ing)|center|meter|theater|check(?=ing account)|program(?!m)|travel(?:ed|ing|er)|gray|cozy|aluminum)\b" % ("|".join(_STEMS), "|".join(_IZE)), re.I)
 
 
 def sentences(text):
     parts = []
     for line in text.splitlines():
-        line = line.strip()
+        line = LIST_MARKER.sub("", line.strip())
         if line:
             parts.extend(s for s in SENTENCE_END.split(line) if s.strip())
     return parts
@@ -40,10 +43,11 @@ def main(folder):
     questions = exclaims = emojis = hashtags = 0
     one_line_paras = total_paras = 0
     british = american = 0
-    first_lines = []
+    first_lines, post_words = [], []
 
     for f in files:
         text = f.read_text(encoding="utf-8", errors="ignore")
+        post_words.append(len(text.split()))
         paras = [p for p in re.split(r"\n\s*\n", text) if p.strip()]
         if paras:
             first_lines.append((f.name, paras[0].strip().splitlines()[0][:120]))
@@ -55,8 +59,9 @@ def main(folder):
         for s in sentences(text):
             words = s.split()
             sent_lengths.append(len(words))
-            if words:
-                openers[words[0].lower().strip("\"'“”‘’,:")] += 1
+            opener = words[0].lower().strip(OPENER_PUNCT) if words else ""
+            if opener:
+                openers[opener] += 1
         questions += text.count("?")
         exclaims += text.count("!")
         emojis += len(EMOJI.findall(text))
@@ -68,9 +73,13 @@ def main(folder):
     q = statistics.quantiles(sent_lengths, n=10) if len(sent_lengths) >= 10 else [min(sent_lengths), max(sent_lengths)]
     print(f"Samples: {n}")
     print(f"Sentence length: average {statistics.mean(sent_lengths):.1f} words, typical range {q[0]:.0f}-{q[-1]:.0f}")
+    print(f"Post length: average {statistics.mean(post_words):.0f} words, range {min(post_words)}-{max(post_words)}")
     print(f"Paragraph length: average {statistics.mean(para_lengths):.1f} sentences; one-line paragraphs {100 * one_line_paras / total_paras:.0f}%")
     print(f"Per post: questions {questions / n:.1f}, exclamation marks {exclaims / n:.1f}, emoji {emojis / n:.1f}, hashtags {hashtags / n:.1f}")
-    print(f"Spelling signals: British-style {british}, American-style {american} (rough; check by reading)")
+    if british or american:
+        print(f"Spelling signals: British-style {british}, American-style {american} (rough; check by reading)")
+    else:
+        print("Spelling signals: none found in these samples; decide by reading (currency, place names, words like 'café' or 'apartment')")
     print("Most common sentence openers:", ", ".join(f"{w} ({c})" for w, c in openers.most_common(12)))
     print("\nFirst lines:")
     for name, line in first_lines:

@@ -2,6 +2,10 @@
 
 Collect evidence for each dimension below. Each finding needs a quote and a count ("seen in 7 of 12 samples"). Findings seen once go under Notes, not Rules.
 
+How many samples a Rule needs:
+- 5 or more samples: seen in at least half of them.
+- Fewer than 5 samples: seen in at least 3, or stated by the client in an interview (cite the timestamp). Mark the profile `status: provisional` and ask the writer for more samples.
+
 ## Dimensions
 
 | # | Dimension | What to look for |
@@ -21,6 +25,8 @@ Collect evidence for each dimension below. Each finding needs a quote and a coun
 ## Patterns that do not belong in any profile
 
 These are generic AI tells. Even if a sample contains them, they were probably written by a tool or a previous writer; confirm with the client before keeping one.
+
+The exception is a phrase the client *said* (it's in a transcript, verbatim) or confirmed they wrote. That's their voice, not a tell: record it under "Signature moves" with its source and the writer's OK, and drafts may quote it. Don't generalise it into a rule that lets new lines use the pattern.
 - "It's not X, it's Y" reveals and "no X, no Y, no Z" lists
 - Self-answered questions ("The result? 40% growth.")
 - Stock openers: "Here's the thing", "Let's dive in", "In today's fast-paced world"
@@ -29,7 +35,7 @@ These are generic AI tells. Even if a sample contains them, they were probably w
 
 ## Scoring a draft
 
-Score a draft against the profile, 1 to 5 on each line, then average.
+Score the draft 1 to 5 on each check below (one score per row, not per line of the draft), then average the six scores.
 
 | Check | 5 means |
 |-------|---------|
@@ -40,4 +46,6 @@ Score a draft against the profile, 1 to 5 on each line, then average.
 | Substance | Every story, number and claim traces back to `stories.md` or a transcript |
 | No AI tells | None of the patterns above |
 
-Substance is a hard gate: any claim that does not trace back to the client's material fails the draft, whatever the other scores. Report the average, list each failing line with the rule it breaks, and give a corrected draft that changes only those lines.
+Substance is a hard gate: any claim that does not trace back to the client's material fails the draft, whatever the other scores. Report the six scores and the average, then list each failing line of the draft with the rule it breaks, and give a corrected draft that changes only those lines. Also check the writer's own editing rules (length, hooks, endings, banned words) and list breaks the same way.
+
+A client's verbatim phrase recorded under "Signature moves" doesn't count against "No AI tells".

@@ -50,3 +50,11 @@ For clients who repair old and listed buildings: stonemasons, lime plasterers, h
 6. What do architects or owners most often get wrong when they first call you?
 7. What would have happened to the building if nobody had done this?
 8. Which apprentice on site is doing something worth showing?
+
+## Platform notes for heritage clients
+
+- **LinkedIn audience:** architects, surveyors and conservation officers (specifiers).
+- **Facebook audience:** local community and older homeowners.
+- **Instagram:** before/after carousels work very well for restoration. Soft call to action, e.g. "Restoring a listed building? Link in bio." Specific hashtags such as #limemortar, #listedbuilding, #stonemasonry.
+- **Google Business Profile:** service names searchers use ("lime plastering near me"); town or area, not the street, unless the owner agreed.
+- **Short video:** the owner reads the script on site. Hook on the most surprising thing ("This wall was killed by cement"); close with one line ("Old buildings need lime, not cement."). Shots: hands and tools close up, a wide shot of the building, before and after.

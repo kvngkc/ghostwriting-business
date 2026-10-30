@@ -5,7 +5,7 @@ last_updated: <YYYY-MM-DD>
 
 # Studio Playbook
 
-This is how this ghostwriter works. Every mode follows it over the skill's defaults.
+This is how this ghostwriter works. Every mode follows it over the skill's defaults. Anything the writer hasn't answered yet is marked `[ASK WRITER: ...]`.
 
 ## Who I write for
 - Client types: <e.g. B2B founders, surgeons, heritage contractors>
@@ -28,12 +28,13 @@ This is how this ghostwriter works. Every mode follows it over the skill's defau
   - <format name>: <how it works> / Example: "<post>"
 - How I write hooks: <rules + 2 examples>
 - How I end posts: <rules>
-- Length: <range>
+- Length: <range> (if a sourced draft comes in short, deliver it short and flag it; never pad)
 
 ## My editing rules
 - Always: <e.g. one idea per post, line break every 1-2 sentences>
 - Never: <banned words, banned structures>
 - My own AI-tell list (on top of the skill's): <list>
+- These rules apply to: <my main platform only / every platform>
 
 ## Approvals and delivery
 - How drafts are sent: <Google Doc / Notion / WhatsApp>
@@ -42,6 +43,7 @@ This is how this ghostwriter works. Every mode follows it over the skill's defau
 
 ## Reporting
 - What clients see each month: <metrics, highlights, next month's plan>
+  (if left blank, the skill uses: what went out, what worked, best comment or conversation, next month's plan)
 
 ## Niche packs I use
 - <e.g. heritage-restoration>

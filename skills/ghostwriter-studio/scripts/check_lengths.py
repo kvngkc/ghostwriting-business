@@ -32,7 +32,11 @@ def check(versions):
             report.append(f"{name}.{field}: {n}/{rule['max']} {status}")
             if n > rule["max"]:
                 problems.append(f"{name}.{field} is {n} characters; limit {rule['max']}")
-        for i, post in enumerate(v.get("thread") or [], start=2):
+        thread = v.get("thread") or []
+        if thread and not (spec.get("thread_allowed") and "text" in spec["fields"]):
+            problems.append(f"{name}: threads aren't supported; put everything in one version")
+            thread = []
+        for i, post in enumerate(thread, start=2):
             texts.append(post)
             limit = spec["fields"]["text"]["max"]
             if len(post) > limit:
@@ -42,8 +46,10 @@ def check(versions):
             problems.append(f"{name}: {tags} hashtags; max {spec['max_hashtags']}")
         if not spec.get("verified", True):
             report.append(f"{name}: limits not officially verified, check in the composer")
-        if "[CHECK" in " ".join(texts):
-            report.append(f"{name}: contains [CHECK] notes to resolve before approval")
+        joined = " ".join(texts)
+        for marker in ("[CHECK", "[ASK"):
+            if marker in joined:
+                report.append(f"{name}: contains {marker}...] notes to resolve before approval")
     return problems, report
 
 
@@ -57,7 +63,10 @@ def main():
         print("\nFAIL")
         print("\n".join(f"- {p}" for p in problems))
         sys.exit(1)
-    print("\nPASS")
+    if any("notes to resolve" in line for line in report):
+        print("\nPASS on limits; resolve the [ASK]/[CHECK] notes above before approval")
+    else:
+        print("\nPASS")
 
 
 if __name__ == "__main__":
