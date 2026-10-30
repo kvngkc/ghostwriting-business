@@ -1,0 +1,7 @@
+.env
+.venv/
+automation/postiz/
+*.log
+__pycache__/
+automation/clients/*
+!automation/clients/example/

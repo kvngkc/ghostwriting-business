@@ -1,0 +1,388 @@
+<title>Ghostwriting HQ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<style>
+/* Layout: a writer's desk ledger. Summary strip, three tabs, one shared editor panel. */
+:root {
+  --bg: #f6f7f5; --surface: #ffffff; --ink: #1c2321; --muted: #5d6965; --line: #dfe4e1;
+  --accent: #1f6b57; --accent-soft: #e2efe9; --warn: #a2620a; --warn-soft: #fbf0dc; --bad: #b3372b; --bad-soft: #f8e3e0;
+  --display: "Newsreader", Georgia, serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121715; --surface: #1a201e; --ink: #e6ebe8; --muted: #9aa8a2; --line: #2c3532;
+  --accent: #5fc0a2; --accent-soft: #1d3a31; --warn: #e3a64a; --warn-soft: #3a2c15; --bad: #ef7d70; --bad-soft: #3d1f1b; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121715; --surface: #1a201e; --ink: #e6ebe8; --muted: #9aa8a2; --line: #2c3532;
+  --accent: #5fc0a2; --accent-soft: #1d3a31; --warn: #e3a64a; --warn-soft: #3a2c15; --bad: #ef7d70; --bad-soft: #3d1f1b; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body) }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px }
+h1 { font: 600 2rem/1.1 var(--display); margin: 0; letter-spacing: -.01em; text-wrap: balance }
+.sub { color: var(--muted); margin: 0 }
+.status { font: 12px var(--mono); color: var(--muted) }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden }
+.stat { background: var(--surface); padding: 14px 16px; display: grid; gap: 2px }
+.stat b { font: 500 1.5rem/1.2 var(--mono); font-variant-numeric: tabular-nums }
+.stat span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em }
+nav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto }
+nav button { font: 500 14px var(--body); background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 10px 14px; cursor: pointer; white-space: nowrap }
+nav button[aria-selected="true"] { color: var(--ink); border-color: var(--accent) }
+nav button:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between }
+.bar h2 { font: 600 1.25rem var(--display); margin: 0 }
+.btn { font: 500 14px var(--body); border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 7px; padding: 7px 12px; cursor: pointer }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg) }
+.btn.small { padding: 3px 8px; font-size: 12px }
+.btn.danger { color: var(--bad) }
+.btn:disabled { opacity: .5; cursor: default }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 14px }
+.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px }
+.form label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); min-width: 0 }
+.form .wide { grid-column: 1 / -1 }
+input, select, textarea { font: 14px var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; width: 100%; min-width: 0 }
+textarea { min-height: 70px; resize: vertical }
+.actions { display: flex; flex-wrap: wrap; gap: 8px }
+.empty { color: var(--muted); padding: 22px; text-align: center; border: 1px dashed var(--line); border-radius: 10px }
+.notice { padding: 12px 14px; border-radius: 8px; background: var(--warn-soft); color: var(--warn) }
+/* Launch */
+.phase { display: grid; gap: 6px }
+.phase h3 { font: 600 1rem var(--display); margin: 8px 0 2px; display: flex; gap: 10px; align-items: baseline }
+.phase h3 small { font: 12px var(--mono); color: var(--muted) }
+.task { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px }
+.task input[type=checkbox] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent) }
+.task.done .t { color: var(--muted); text-decoration: line-through }
+.task .meta { font-size: 12px; color: var(--muted) }
+.progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden }
+.progress i { display: block; height: 100%; background: var(--accent) }
+/* Pipeline */
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 1fr); gap: 10px; overflow-x: auto; padding-bottom: 6px }
+.col { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.col h3 { font: 600 13px var(--body); margin: 0; display: flex; justify-content: space-between; color: var(--muted); text-transform: uppercase; letter-spacing: .05em }
+.card { border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; display: grid; gap: 4px; background: var(--bg); min-width: 0 }
+.card .n { font-weight: 600; overflow-wrap: anywhere }
+.card .c { font-size: 13px; color: var(--muted); overflow-wrap: anywhere }
+.card .due { font: 12px var(--mono) }
+.due.late { color: var(--bad) }
+.card .row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px }
+.pill { display: inline-block; font: 500 11px var(--body); padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); text-transform: uppercase; letter-spacing: .04em }
+.pill.warn { background: var(--warn-soft); color: var(--warn) }
+.pill.bad { background: var(--bad-soft); color: var(--bad) }
+/* Clients */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; min-width: 860px }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px }
+th { font: 500 12px var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: .05em }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums }
+tr:last-child td { border-bottom: 0 }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Ghostwriting HQ</h1>
+      <p class="sub">Launch plan, sales pipeline and clients for the ghostwriting business.</p>
+    </div>
+    <span class="status" id="status">Connecting to saved data…</span>
+  </header>
+
+  <section class="strip" aria-label="Summary">
+    <div class="stat"><b id="s-launch">–</b><span>Launch tasks done</span></div>
+    <div class="stat"><b id="s-open">–</b><span>Open deals</span></div>
+    <div class="stat"><b id="s-followups">–</b><span>Follow-ups due</span></div>
+    <div class="stat"><b id="s-clients">–</b><span>Active clients</span></div>
+    <div class="stat"><b id="s-mrr">–</b><span>Monthly revenue</span></div>
+  </section>
+
+  <nav role="tablist">
+    <button role="tab" id="tab-launch" aria-selected="true" data-view="launch">Launch</button>
+    <button role="tab" id="tab-pipeline" aria-selected="false" data-view="pipeline">Pipeline</button>
+    <button role="tab" id="tab-clients" aria-selected="false" data-view="clients">Clients</button>
+  </nav>
+
+  <div id="notice" class="notice" hidden></div>
+  <section id="editor" class="panel" hidden aria-live="polite"></section>
+
+  <section id="view-launch" data-panel="launch"></section>
+  <section id="view-pipeline" data-panel="pipeline" hidden></section>
+  <section id="view-clients" data-panel="clients" hidden></section>
+</div>
+
+<script>
+(() => {
+  const STAGES = ["Prospect", "Contacted", "Replied", "Sample sent", "Call booked", "Proposal sent", "Won", "Lost"];
+  const PHASES = ["1. Foundations", "2. Offer & proof", "3. Systems", "4. Outreach", "5. First clients"];
+  const FIELDS = {
+    launch: [
+      { k: "task", label: "Task", wide: true, required: true },
+      { k: "phase", label: "Phase", options: PHASES },
+      { k: "due", label: "Due", type: "date" },
+      { k: "notes", label: "Notes", type: "textarea", wide: true },
+    ],
+    deals: [
+      { k: "name", label: "Name", required: true },
+      { k: "company", label: "Company / role" },
+      { k: "stage", label: "Stage", options: STAGES },
+      { k: "source", label: "Source", options: ["Cold email", "LinkedIn", "Warm network", "Referral", "Inbound", "Other"] },
+      { k: "contact", label: "Email or LinkedIn URL" },
+      { k: "value", label: "Monthly value", type: "number" },
+      { k: "currency", label: "Currency", options: ["USD", "GBP", "EUR", "NGN"] },
+      { k: "nextAction", label: "Next action" },
+      { k: "nextDate", label: "Next action date", type: "date" },
+      { k: "lostReason", label: "Lost reason", options: ["", "No reply", "No budget", "Bad timing", "Chose someone else", "Not a fit", "Do not contact"] },
+      { k: "hook", label: "Hook (the true, specific reason you're contacting them)", type: "textarea", wide: true },
+      { k: "notes", label: "Notes", type: "textarea", wide: true },
+    ],
+    clients: [
+      { k: "name", label: "Client", required: true },
+      { k: "company", label: "Company" },
+      { k: "status", label: "Status", options: ["Onboarding", "Active", "Paused", "Churned"] },
+      { k: "plan", label: "Plan" },
+      { k: "fee", label: "Monthly fee", type: "number" },
+      { k: "currency", label: "Currency", options: ["USD", "GBP", "EUR", "NGN"] },
+      { k: "start", label: "Start date", type: "date" },
+      { k: "nextInvoice", label: "Next invoice", type: "date" },
+      { k: "nextInterview", label: "Next interview", type: "date" },
+      { k: "voice", label: "Voice profile", options: ["Not started", "Provisional", "Approved"] },
+      { k: "postsPerMonth", label: "Posts / month", type: "number" },
+      { k: "notes", label: "Notes", type: "textarea", wide: true },
+    ],
+  };
+  const COLL = { launch: "launch", pipeline: "deals", clients: "clients" };
+  const state = { launch: [], deals: [], clients: [], ready: false };
+  let db = null, view = "launch";
+
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, attrs = {}, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "class") n.className = v;
+      else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+      else if (v !== undefined && v !== null && v !== false) n.setAttribute(k, v === true ? "" : v);
+    }
+    for (const kid of kids.flat()) if (kid !== null && kid !== undefined && kid !== false) n.append(kid.nodeType ? kid : String(kid));
+    return n;
+  };
+  const today = () => new Date().toISOString().slice(0, 10);
+  const fmtDate = (d) => d ? new Date(d + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short" }) : "";
+  const money = (n, c) => {
+    try { return new Intl.NumberFormat(undefined, { style: "currency", currency: c || "USD", maximumFractionDigits: 0 }).format(n || 0); }
+    catch { return `${c || ""} ${n || 0}`; }
+  };
+  const setStatus = (t) => { $("#status").textContent = t; };
+  const showNotice = (t) => { const n = $("#notice"); n.textContent = t; n.hidden = !t; };
+
+  // ---------- tabs ----------
+  function selectView(v) {
+    view = v;
+    document.querySelectorAll("nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.view === v)));
+    document.querySelectorAll("[data-panel]").forEach(p => { p.hidden = p.dataset.panel !== v; });
+    closeEditor();
+    if (location.hash !== "#" + v) history.replaceState(null, "", "#" + v);
+  }
+  document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => selectView(b.dataset.view)));
+  window.addEventListener("hashchange", () => { const v = location.hash.slice(1); if (COLL[v]) selectView(v); });
+
+  // ---------- editor ----------
+  function closeEditor() { const e = $("#editor"); e.hidden = true; e.replaceChildren(); }
+  function openEditor(kind, doc) {
+    const coll = COLL[kind] || kind;
+    const fields = FIELDS[coll];
+    const data = doc ? { ...doc.data } : defaults(coll);
+    const form = el("form", { class: "form" });
+    for (const f of fields) {
+      const id = `f-${coll}-${f.k}`;
+      let input;
+      if (f.options) input = el("select", { id, name: f.k }, f.options.map(o => el("option", { value: o, selected: (data[f.k] ?? "") === o }, o || "—")));
+      else if (f.type === "textarea") { input = el("textarea", { id, name: f.k }); input.value = data[f.k] ?? ""; }
+      else input = el("input", { id, name: f.k, type: f.type || "text", value: data[f.k] ?? "", required: f.required, step: f.type === "number" ? "any" : null });
+      form.append(el("label", { for: id, class: f.wide ? "wide" : "" }, f.label, input));
+    }
+    const save = el("button", { class: "btn primary", type: "submit" }, doc ? "Save changes" : "Add");
+    const actions = el("div", { class: "actions wide" }, save, el("button", { class: "btn", type: "button", onclick: closeEditor }, "Cancel"));
+    let armed = false;
+    if (doc) actions.append(el("button", { class: "btn danger", type: "button", onclick: async (ev) => {
+      if (!armed) { armed = true; ev.currentTarget.textContent = "Click again to delete"; return; }
+      await remove(coll, doc.id); closeEditor();
+    } }, "Delete"));
+    form.append(actions);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const out = { ...data };
+      for (const f of fields) {
+        const v = form.elements[f.k].value.trim();
+        out[f.k] = f.type === "number" ? (v === "" ? null : Number(v)) : v;
+      }
+      save.disabled = true;
+      const ok = await write(coll, doc?.id, out);
+      save.disabled = false;
+      if (ok) closeEditor();
+    });
+    const titles = { launch: "launch task", deals: "deal", clients: "client" };
+    const e = $("#editor");
+    e.replaceChildren(el("div", { class: "bar" }, el("h2", {}, (doc ? "Edit " : "New ") + titles[coll])), form);
+    e.hidden = false;
+    form.querySelector("input,select,textarea")?.focus();
+  }
+  function defaults(coll) {
+    if (coll === "launch") return { phase: PHASES[0], done: false, order: Date.now() };
+    if (coll === "deals") return { stage: "Prospect", currency: "USD", source: "Cold email", created: today() };
+    return { status: "Onboarding", currency: "USD", voice: "Not started", start: today() };
+  }
+
+  // ---------- data ----------
+  async function write(coll, id, data) {
+    if (!db) { showNotice("Saving needs a signed-in viewer with edit access."); return false; }
+    try {
+      data.updated = new Date().toISOString();
+      if (id) await db.collection(coll).doc(id).set(data); else await db.collection(coll).add(data);
+      showNotice(""); return true;
+    } catch (err) { showNotice(`Couldn't save: ${err.message || err.code}. Check that you have edit access, then try again.`); return false; }
+  }
+  async function patch(coll, id, data) {
+    try { await db.collection(coll).doc(id).update({ ...data, updated: new Date().toISOString() }); showNotice(""); }
+    catch (err) { showNotice(`Couldn't save: ${err.message || err.code}.`); }
+  }
+  async function remove(coll, id) {
+    try { await db.collection(coll).doc(id).delete(); } catch (err) { showNotice(`Couldn't delete: ${err.message || err.code}.`); }
+  }
+
+  // ---------- render ----------
+  function render() { renderSummary(); renderLaunch(); renderPipeline(); renderClients(); }
+
+  function renderSummary() {
+    if (!state.ready) return;
+    const done = state.launch.filter(t => t.data.done).length;
+    $("#s-launch").textContent = state.launch.length ? `${done}/${state.launch.length}` : "0";
+    const open = state.deals.filter(d => !["Won", "Lost"].includes(d.data.stage));
+    $("#s-open").textContent = open.length;
+    $("#s-followups").textContent = open.filter(d => d.data.nextDate && d.data.nextDate <= today()).length;
+    const active = state.clients.filter(c => ["Active", "Onboarding"].includes(c.data.status));
+    $("#s-clients").textContent = active.length;
+    const byCur = {};
+    for (const c of active) if (c.data.fee) byCur[c.data.currency || "USD"] = (byCur[c.data.currency || "USD"] || 0) + c.data.fee;
+    $("#s-mrr").textContent = Object.keys(byCur).length ? Object.entries(byCur).map(([c, n]) => money(n, c)).join(" + ") : "0";
+  }
+
+  function renderLaunch() {
+    const root = $("#view-launch");
+    const done = state.launch.filter(t => t.data.done).length;
+    const pct = state.launch.length ? Math.round(100 * done / state.launch.length) : 0;
+    const head = el("div", { class: "bar" },
+      el("h2", {}, "Launch plan"),
+      el("button", { class: "btn primary", onclick: () => openEditor("launch") }, "Add task"));
+    const prog = el("div", { class: "progress", role: "progressbar", "aria-valuenow": pct, "aria-valuemin": 0, "aria-valuemax": 100, "aria-label": "Launch progress" }, el("i", { style: `width:${pct}%` }));
+    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading launch tasks…"));
+    if (!state.launch.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No launch tasks yet. Add your first task, or ask Claude to load the launch plan."));
+    const groups = PHASES.map(p => [p, state.launch.filter(t => (t.data.phase || PHASES[0]) === p)]).filter(([, ts]) => ts.length);
+    const others = state.launch.filter(t => !PHASES.includes(t.data.phase || PHASES[0]));
+    if (others.length) groups.push(["Other", others]);
+    root.replaceChildren(head, prog, ...groups.map(([phase, tasks]) => {
+      tasks.sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+      const n = tasks.filter(t => t.data.done).length;
+      return el("div", { class: "phase" },
+        el("h3", {}, phase, el("small", {}, `${n}/${tasks.length}`)),
+        tasks.map(t => {
+          const late = !t.data.done && t.data.due && t.data.due < today();
+          return el("div", { class: "task" + (t.data.done ? " done" : "") },
+            el("input", { type: "checkbox", id: "chk-" + t.id, checked: !!t.data.done, "aria-label": "Done: " + t.data.task, onchange: (e) => patch("launch", t.id, { done: e.target.checked }) }),
+            el("div", {}, el("div", { class: "t" }, t.data.task),
+              (t.data.notes || t.data.due) ? el("div", { class: "meta" }, [t.data.due ? (late ? "Overdue · " : "Due ") + fmtDate(t.data.due) : "", t.data.notes].filter(Boolean).join(" · ")) : null),
+            el("button", { class: "btn small", onclick: () => openEditor("launch", t) }, "Edit"));
+        }));
+    }));
+  }
+
+  function renderPipeline() {
+    const root = $("#view-pipeline");
+    const head = el("div", { class: "bar" },
+      el("h2", {}, "Sales pipeline"),
+      el("button", { class: "btn primary", onclick: () => openEditor("pipeline") }, "Add prospect"));
+    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading deals…"));
+    if (!state.deals.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No prospects yet. Add someone you've researched, with the specific hook you'll open with."));
+    const board = el("div", { class: "board" }, STAGES.map((stage, i) => {
+      const deals = state.deals.filter(d => (d.data.stage || "Prospect") === stage)
+        .sort((a, b) => (a.data.nextDate || "9999").localeCompare(b.data.nextDate || "9999"));
+      return el("div", { class: "col" },
+        el("h3", {}, stage, el("span", {}, deals.length)),
+        deals.map(d => {
+          const late = d.data.nextDate && d.data.nextDate <= today() && !["Won", "Lost"].includes(stage);
+          return el("div", { class: "card" },
+            el("div", { class: "n" }, d.data.name),
+            d.data.company ? el("div", { class: "c" }, d.data.company) : null,
+            d.data.nextAction || d.data.nextDate ? el("div", { class: "due" + (late ? " late" : "") }, [d.data.nextAction, d.data.nextDate ? fmtDate(d.data.nextDate) : ""].filter(Boolean).join(" · ")) : null,
+            el("div", { class: "row" },
+              d.data.source ? el("span", { class: "pill" }, d.data.source) : null,
+              d.data.value ? el("span", { class: "pill" }, money(d.data.value, d.data.currency) + "/mo") : null,
+              stage === "Lost" && d.data.lostReason ? el("span", { class: "pill bad" }, d.data.lostReason) : null),
+            el("div", { class: "row" },
+              i > 0 && stage !== "Lost" ? el("button", { class: "btn small", "aria-label": `Move ${d.data.name} back`, onclick: () => patch("deals", d.id, { stage: STAGES[i - 1] }) }, "←") : null,
+              i < 6 ? el("button", { class: "btn small", "aria-label": `Move ${d.data.name} to ${STAGES[i + 1]}`, onclick: () => advance(d, i + 1) }, STAGES[i + 1] + " →") : null,
+              i < 6 ? el("button", { class: "btn small", onclick: () => openEditor("pipeline", { ...d, data: { ...d.data, stage: "Lost" } }) }, "Lost") : null,
+              el("button", { class: "btn small", onclick: () => openEditor("pipeline", d) }, "Edit")));
+        }));
+    }));
+    root.replaceChildren(head, board);
+  }
+  async function advance(d, to) {
+    await patch("deals", d.id, { stage: STAGES[to] });
+    if (STAGES[to] === "Won" && !state.clients.some(c => c.data.dealId === d.id)) {
+      await write("clients", null, { ...defaults("clients"), name: d.data.name, company: d.data.company || "", fee: d.data.value ?? null, currency: d.data.currency || "USD", dealId: d.id, notes: "Created from pipeline. Run the onboarding checklist." });
+      showNotice(`${d.data.name} added to Clients.`);
+    }
+  }
+
+  function renderClients() {
+    const root = $("#view-clients");
+    const head = el("div", { class: "bar" },
+      el("h2", {}, "Clients"),
+      el("button", { class: "btn primary", onclick: () => openEditor("clients") }, "Add client"));
+    if (!state.ready) return root.replaceChildren(head, el("div", { class: "empty" }, "Loading clients…"));
+    if (!state.clients.length) return root.replaceChildren(head, el("div", { class: "empty" }, "No clients yet. Deals you move to Won appear here automatically."));
+    const order = { Onboarding: 0, Active: 1, Paused: 2, Churned: 3 };
+    const rows = [...state.clients].sort((a, b) => (order[a.data.status] ?? 9) - (order[b.data.status] ?? 9) || (a.data.name || "").localeCompare(b.data.name || ""));
+    const due = (d) => d ? el("span", { class: d <= today() ? "due late" : "due" }, fmtDate(d)) : "—";
+    const statusPill = (s) => el("span", { class: "pill" + (s === "Paused" ? " warn" : s === "Churned" ? " bad" : "") }, s || "—");
+    const voicePill = (v) => el("span", { class: "pill" + (v === "Approved" ? "" : v === "Provisional" ? " warn" : " bad") }, v || "Not started");
+    root.replaceChildren(head, el("div", { class: "tablewrap" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Client", "Status", "Plan", "Fee / mo", "Posts", "Voice", "Next interview", "Next invoice", ""].map(h => el("th", { scope: "col" }, h)))),
+      el("tbody", {}, rows.map(c => el("tr", {},
+        el("td", {}, el("div", { class: "n" }, c.data.name), c.data.company ? el("div", { class: "c" }, c.data.company) : null),
+        el("td", {}, statusPill(c.data.status)),
+        el("td", {}, c.data.plan || "—"),
+        el("td", { class: "num" }, c.data.fee ? money(c.data.fee, c.data.currency) : "—"),
+        el("td", { class: "num" }, c.data.postsPerMonth ?? "—"),
+        el("td", {}, voicePill(c.data.voice)),
+        el("td", { class: "num" }, due(c.data.nextInterview)),
+        el("td", { class: "num" }, due(c.data.nextInvoice)),
+        el("td", {}, el("button", { class: "btn small", onclick: () => openEditor("clients", c) }, "Edit"))))))));
+  }
+
+  // ---------- boot ----------
+  render();
+  const start = location.hash.slice(1);
+  if (COLL[start]) selectView(start);
+
+  (async () => {
+    const api = window.claude?.use ? await window.claude.use("db") : null;
+    if (!api) {
+      state.ready = true; render();
+      setStatus("Offline");
+      showNotice("Saved data isn't available in this view. Open the page signed in to claude.ai to see and edit the trackers.");
+      return;
+    }
+    db = api;
+    let loaded = 0;
+    const onErr = (err) => { setStatus("Sync problem"); showNotice(`Couldn't load data: ${err.message || err.code}.`); };
+    for (const coll of ["launch", "deals", "clients"]) {
+      db.collection(coll).onSnapshot((snap) => {
+        state[coll] = snap.docs.map(d => ({ id: d.id, data: d.data() || {} }));
+        if (++loaded >= 3) state.ready = true;
+        if (state.ready) { render(); setStatus("Saved · live"); }
+      }, onErr);
+    }
+  })();
+})();
+</script>
